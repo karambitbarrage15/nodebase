@@ -1,18 +1,24 @@
 import {z} from 'zod';
-import { baseProcedure,
+import { inngest } from '@/inngest/client';
+import { 
   createTRPCRouter ,protectedProcedure} from '../init'; 
   import {prisma} from '@/lib/db'
-import { HelpCircle } from 'lucide-react';
+
 import { log } from 'node:console';
 export const appRouter=createTRPCRouter({
 
-  getUsers:protectedProcedure.query(({ctx})=>{
+  getWorkflows:protectedProcedure.query(({ctx})=>{
  
     
-    return prisma.user.findMany({
-      where:{
-        id:ctx.auth.user.id,
-      }
-    });}),
+    return prisma.workflow.findMany();}),
+    createWorkflow:protectedProcedure.mutation(async()=>{
+      await inngest.send({
+        name:"test/hello.world",
+        data:{
+          email:"adityachats6768@gmail.com"
+        }
+      })
+      return {success:true,message:"Job queued"}
+    })
 });
 export type AppRouter=typeof appRouter;
