@@ -17,7 +17,7 @@ const Page = () => {
     },
     onError: (error) => {
       toast.error("AI test failed");
-      console.error(error);
+     // console.error(error);
     },
   });
 const create = trpc.createWorkflow.useMutation({

@@ -8,8 +8,11 @@ import {
   import {prisma} from '@/lib/db'
 
 import { log } from 'node:console';
+import { TRPCError } from '@trpc/server';
+import { logger } from 'better-auth';
 export const appRouter=createTRPCRouter({
   testAi:baseProcedure.mutation(async ()=>{
+   
     await inngest.send({
       name:"execute/ai",
 
