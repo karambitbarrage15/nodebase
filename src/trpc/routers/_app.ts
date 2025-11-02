@@ -4,14 +4,14 @@ import {generateText} from "ai";
 import { inngest } from '@/inngest/client';
 import { 
   baseProcedure,
-  createTRPCRouter ,protectedProcedure} from '../init'; 
+  createTRPCRouter ,premiumProcedure,protectedProcedure} from '../init'; 
   import {prisma} from '@/lib/db'
 
 import { log } from 'node:console';
 import { TRPCError } from '@trpc/server';
 import { logger } from 'better-auth';
 export const appRouter=createTRPCRouter({
-  testAi:baseProcedure.mutation(async ()=>{
+  testAi:premiumProcedure.mutation(async ()=>{
    
     await inngest.send({
       name:"execute/ai",
