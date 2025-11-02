@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
+import { useHasActiveSubscription } from "@/features/auth/components/subscriptions/hooks/use-subscription";
 
 const menuItems = [{
   title: "Main",
@@ -48,6 +49,7 @@ const menuItems = [{
 export const AppSidebar = () => {
   const pathname = usePathname();
   const router=useRouter();
+  const {hasActiveSubscripition,isLoading}=useHasActiveSubscription();
   // Helper function to determine active state
   const isActive = (url: string) => {
     if (url === '/') return pathname === '/';
@@ -62,12 +64,12 @@ export const AppSidebar = () => {
             <Link href='/workflows' prefetch>
               <img 
                 src="/logos/logo.svg" 
-                alt="PipSync" 
+                alt="SyncEngine" 
                 width={30}
                 height={30}
                 className="inline-block"
               />
-              <span className="font-semibold text-sm">PipeSync</span>
+              <span className="font-semibold text-sm">SyncEngine</span>
             </Link>
           </SidebarMenuButton>
         </SidebarMenuItem>
@@ -99,18 +101,21 @@ export const AppSidebar = () => {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+          {!hasActiveSubscripition&&!isLoading&&(
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Upgrade to Pro" className="gap-x-4 h-10 px-4" onClick={()=>{
+              authClient.checkout({slug:"syncEngine-Pro"})
 
             }}>
               <StarIcon className="h-4 w-4" />
               <span>Upgrade to Pro</span>
 
             </SidebarMenuButton>
-          </SidebarMenuItem>
+          </SidebarMenuItem>)}
         </SidebarMenu> <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Billing Portal" className="gap-x-4 h-10 px-4" onClick={()=>{
+              authClient.customer.portal();
 
             }}>
               <CreditCardIcon className="h-4 w-4" />
